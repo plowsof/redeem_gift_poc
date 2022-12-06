@@ -7,7 +7,10 @@ it can be one txid or in this case multiple seperated by a comma.
 ```
 monero_wallet:address=58Bj65FCpfpULRXyf7mmsY1vB4qiW8qQ8X99tw783rSggPjmvUcRHycaXUQfSwMVpuUj6FWDr4fNHFYyo7f1XdtsJsXAJ1Y&spend_key=75ca1b95ee9dd8bbf059da64c6750fd500731f8775389ce089d516d46108fc05&view_key=c59b3e3182d9c665d0f3a1776a28301410283ab6ff6a9bd3abc7a5bb37758f03&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814,bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34,cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188
 ```
-
+or with just seed and txid
+```
+monero_uri="monero_wallet:seed=portents%20toyed%20judge%20sighting%20smidgen%20masterful%20selfish%20sack%20cabin%20loudly%20maps%20gown%20thumbs%20five%20sword%20tonic%20cunning%20android%20ourselves%20lawsuit%20fossil%20pedantic%20origin%20peaches%20toyed&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814,bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34,cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
+```
 Output:
 ```
 params from uri:
