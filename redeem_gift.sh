@@ -35,7 +35,6 @@ for chunk in "${params[@]}"; do
 	fi
 	if [[ "${value[0]}" == "view_key" ]]; then
 		view_key="${value[1]}"
-
 	fi
 	if [[ "${value[0]}" == "txid" ]]; then
 		txid="${value[1]}"
@@ -49,10 +48,15 @@ for chunk in "${params[@]}"; do
 done
 
 printf "params from uri:\n"
+if [ $view_key ]; then
 printf "view_key:\n$view_key\n"
 printf "spend_key:\n$spend_key\n"
-printf "txid list:\n$txid\n"
+else
+hr_txid=$(printf "$txid" | sed "s/,/\n/g")
+printf "txid list:\n$hr_txid\n"
+printf "your address:\n$pay_to_address\n"
 #printf "seed:\n'$seed'\n"
+fi
 
 # confirm 4 requirements (address/spend/view/txids) or (seed/txids)
 if [[ ! "$txid" ]]; then
@@ -85,15 +89,15 @@ do
 	status=$(curl -sk http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"stop_wallet"}' -H 'Content-Type: application/json')
 done
 
-echo 
+echo
 rm redeem_gift
 rm redeem_gift.keys
 
 if [[ $generate_from_seed == 1 ]]; then
 	seed=$(echo $seed | sed 's/%20/ /g')
-	resp_generate=$(curl -sk http://localhost:18082/json_rpc -d "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"restore_deterministic_wallet\",\"params\":{\"seed\":\"${seed}\",\"restore_height\":${HEIGHT},\"filename\":\"redeem_gift\",\"password\":\"\"}}" -H 'Content-Type: application/json')
+	resp_generate=$(curl -sk http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"restore_deterministic_wallet","params":{"seed":"'"${seed}"'","restore_height":'${HEIGHT}',"filename":"redeem_gift","password":""}}' -H 'Content-Type: application/json')
 else
-	resp_generate=$(curl -sk http://localhost:18082/json_rpc -d "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"generate_from_keys\",\"params\":{\"address\":\"${address}\",\"restore_height\":${HEIGHT},\"filename\":\"redeem_gift\",\"spendkey\":\"${spend_key}\",\"viewkey\":\"${view_key}\",\"password\":\"\"}}" -H 'Content-Type: application/json')
+	resp_generate=$(curl -sk http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"generate_from_keys","params":{"address":"'"${address}"'","restore_height":'${HEIGHT}',"filename":"redeem_gift","spendkey":"'${spend_key}'","viewkey":"'${view_key}'","password":""}}' -H 'Content-Type: application/json')
 fi
 
 # todo check if error returned then exit
@@ -103,7 +107,7 @@ WALLET="redeem_gift"
 while [[ ! -f "$WALLET" ]]
 do
 	sleep 1
-    printf "\nWait for wallet to be created...\n"
+	printf "\nWait for wallet to be created...\n"
 done
 
 curl http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"open_wallet","params":{"filename":"redeem_gift","password":""}}' -H 'Content-Type: application/json'
@@ -116,8 +120,9 @@ IFS=',' read -ra txids <<< ${txid}
 txid_list=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${txids[@]}")
 
 #scan_tx accepts our list
-curl http://localhost:18082/json_rpc -d "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"scan_tx\",\"params\":{\"txids\":${txid_list}}}" -H 'Content-Type: application/json'
+curl http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"scan_tx","params":{"txids":'"${txid_list}"'}}' -H 'Content-Type: application/json'
 #sweep all to out pay to address
-curl http://localhost:18082/json_rpc -d "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"sweep_all\",\"params\":{\"address\":\"${pay_to_address}\",\"do_not_relay\":true}}" -H 'Content-Type: application/json'
+curl http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"sweep_all","params":{"address":"'"${pay_to_address}"'","do_not_relay":true}}' -H 'Content-Type: application/json'
 #stop wallet at the end
 curl http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"stop_wallet"}' -H 'Content-Type: application/json'
+exit 0
