@@ -52,11 +52,11 @@ if [ $view_key ]; then
 printf "view_key:\n$view_key\n"
 printf "spend_key:\n$spend_key\n"
 else
-hr_txid=$(printf "$txid" | sed "s/,/\n/g")
-printf "txid list:\n$hr_txid\n"
 printf "your address:\n$pay_to_address\n"
 #printf "seed:\n'$seed'\n"
 fi
+hr_txid=$(printf "$txid" | sed "s/,/\n/g")
+printf "txid list:\n$hr_txid\n"
 
 # confirm 4 requirements (address/spend/view/txids) or (seed/txids)
 if [[ ! "$txid" ]]; then
