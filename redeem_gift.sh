@@ -7,12 +7,12 @@ node="node2.monerodevs.org:38089/json_rpc"
 pay_to_address="59kCsXvXVWg6BBCwXE6Kj5hATsgVGHfSxM5ZJBPrPsPXcxwLza5AdKKTuZhXYrv2dqD1o29mqhzJQJzcBXMuzzGEEuYRaec"
 rpc_binary="monero-wallet-rpc --stagenet"
 # obtained from scanning a qr code
-#monero_uri="monero_wallet:address=58Bj65FCpfpULRXyf7mmsY1vB4qiW8qQ8X99tw783rSggPjmvUcRHycaXUQfSwMVpuUj6FWDr4fNHFYyo7f1XdtsJsXAJ1Y&spend_key=75ca1b95ee9dd8bbf059da64c6750fd500731f8775389ce089d516d46108fc05&view_key=c59b3e3182d9c665d0f3a1776a28301410283ab6ff6a9bd3abc7a5bb37758f03&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814,bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34,cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
+#monero_uri="monero_wallet:address=58Bj65FCpfpULRXyf7mmsY1vB4qiW8qQ8X99tw783rSggPjmvUcRHycaXUQfSwMVpuUj6FWDr4fNHFYyo7f1XdtsJsXAJ1Y&spend_key=75ca1b95ee9dd8bbf059da64c6750fd500731f8775389ce089d516d46108fc05&view_key=c59b3e3182d9c665d0f3a1776a28301410283ab6ff6a9bd3abc7a5bb37758f03&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814;bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34;cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
 
 #input_seed="portents toyed judge sighting smidgen masterful selfish sack cabin loudly maps gown thumbs five sword tonic cunning android ourselves lawsuit fossil pedantic origin peaches toyed"
 #uriify_seed=$(echo $input_seed | sed 's/ /%20/g')
-#monero_uri="monero_wallet:seed=${uriify_seed}&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814,bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34,cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
-monero_uri="monero_wallet:seed=portents%20toyed%20judge%20sighting%20smidgen%20masterful%20selfish%20sack%20cabin%20loudly%20maps%20gown%20thumbs%20five%20sword%20tonic%20cunning%20android%20ourselves%20lawsuit%20fossil%20pedantic%20origin%20peaches%20toyed&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814,bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34,cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
+#monero_uri="monero_wallet:seed=${uriify_seed}&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814;bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34;cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
+monero_uri="monero_wallet:seed=portents%20toyed%20judge%20sighting%20smidgen%20masterful%20selfish%20sack%20cabin%20loudly%20maps%20gown%20thumbs%20five%20sword%20tonic%20cunning%20android%20ourselves%20lawsuit%20fossil%20pedantic%20origin%20peaches%20toyed&txid=f8477b831a028f07d5638157afc0fbf0897066b4caa29dc48f885fba79cec814;bd20081e0d1abf05b275bcc06bc7e315bc03c57870e247c82c8a45b30f4d1b34;cdbed9b4b2f56de7cce9255610d0cae702aefb36f9a4ff15698ea448f29f6188"
 
 #basic sanity checks
 IFS=':' read -ra ADDR <<< "$monero_uri"
@@ -115,7 +115,7 @@ curl http://localhost:18082/json_rpc -d '{"jsonrpc":"2.0","id":"0","method":"ope
 # parse / scan txs
 
 printf "\nWallet is opened ok\n"
-IFS=',' read -ra txids <<< ${txid}
+IFS=';' read -ra txids <<< ${txid}
 #bash array to string https://stackoverflow.com/a/67489301
 txid_list=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${txids[@]}")
 
