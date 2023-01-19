@@ -77,6 +77,7 @@ HEIGHT=$(echo $REQ | jq '.result.height')
 $rpc_binary --wallet-dir "$(pwd)" \
 --rpc-bind-port 18082 \
 --daemon-host $node \
+--trusted-daemon \
 --log-level 0 \
 --disable-rpc-login 2>&1 & #outputs rpc into the same terminal window / continues script
 
