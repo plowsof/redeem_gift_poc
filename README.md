@@ -1,4 +1,4 @@
-in 20~ seconds the script restores a monero wallet from keys and scans in a list of 3 transactions (passed by a uri link e.g. from a qr code).    
+in 6~ seconds the script restores a monero wallet from keys and scans in a list of 3 transactions (passed by a uri link e.g. from a qr code).    
 `sweep_all` to your pay out address.     
 (requires monero-wallet-rpc in same dir as script)
 
